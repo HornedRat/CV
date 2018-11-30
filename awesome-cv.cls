@@ -504,6 +504,13 @@
   } 
 }
 
+%define an absolutly no page break environment
+\newenvironment{absolutelynopagebreak}
+  {\par\nobreak\vfil\penalty0\vfilneg
+   \vtop\bgroup}
+  {\par\xdef\tpd{\the\prevdepth}\egroup
+   \prevdepth=\tpd}
+
 % Define a section for CV
 % Usage: \cvsection{<section-title>}
 \newcommand{\cvsection}[1]{
@@ -539,6 +546,36 @@
       \entrypositionstyle{#1} & \entrydatestyle{#4} \\}
     \multicolumn{2}{L{17cm}}{\descriptionstyle{#5}} \\
   \end{tabular*}
+}
+
+% Define an entry of cv information WITHOUT DESCRIPTION
+% Usage: \cventry{<position>}{<title>}{<location>}{<date>}}
+\newcommand*{\cventryshort}[4]{
+  \setlength\tabcolsep{0pt}
+  \setlength{\extrarowheight}{0pt}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{12.5cm} R{4.5cm}}
+    \ifempty{#2#3}
+      {\entrypositionstyle{#1} & \entrydatestyle{#4} \\}
+      {\entrytitlestyle{#2} & \entrylocationstyle{#3} \\
+      \entrypositionstyle{#1} & \entrydatestyle{#4} \\}
+  \end{tabular*}
+}
+
+% Define an environment for cvskill
+\newenvironment{cvskills}{
+  \begin{center}
+    \setlength\tabcolsep{1ex}
+    \setlength{\extrarowheight}{0pt}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} r L{15.2cm}}
+}{
+    \end{tabular*}
+  \end{center}
+}
+% Define a line of cv information(skill)
+% Usage: \cvskill{<type>}{<skillset>}
+\newcommand*{\cvskill}[2]{
+	\skilltypestyle{#1} & \skillsetstyle{#2} 
+  \\
 }
 
 % Define an environment for cvsubentry
@@ -582,22 +619,6 @@
   \\
 }
 
-% Define an environment for cvskill
-\newenvironment{cvskills}{
-  \begin{center}
-    \setlength\tabcolsep{1ex}
-    \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} r L{15.2cm}}
-}{
-    \end{tabular*}
-  \end{center}
-}
-% Define a line of cv information(skill)
-% Usage: \cvskill{<type>}{<skillset>}
-\newcommand*{\cvskill}[2]{
-	\skilltypestyle{#1} & \skillsetstyle{#2} 
-  \\
-}
 
 % Define an environment for cvitems(for cventry)
 \newenvironment{cvitems}{
